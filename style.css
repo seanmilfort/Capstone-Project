@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Marvel:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+/* https://fonts.google.com/specimen/Marvel#standard-styles */
+
+/* https://coolors.co/palette/150c0c-8d0a16-dbd7d4-5a5957
+150C0C - Smokey Black
+8D0A16 - Crimson Red
+DBD7D4 - Timberwolf
+5A5957 - Davy's Grey
+*/
+
+* {
+  background-color: #150C0C;
+}
+
+body {
+  font-family: "Marvel", sans-serif;
+  color: #DBD7D4;
+  text-align: center;
+  position: relative;
+  padding-top: 100px;
+  padding-bottom: 50px;
+  justify-content: center;
+}
+
+button {
+  width: 250px;
+  font-size: 32px;
+  border-bottom-right-radius: 16px;
+  color: #DBD7D4;
+}
+
+div {
+  padding-top: 15px;
+}
+
+td img {
+  width: 50%;
+  object-fit: cover;
+}
+
+.mediaTable td, .mediaTable tr, .mediaTable th, .reviewTable td {
+  border: 1px solid #5A5957;
+}
+
+.reviewTable {
+  border-collapse: collapse;
+}
+
+.reviewTable thead {
+  border: 3px solid #5A5957;
+  border-spacing: 2px;
+}
+
+a:visited {
+  color: white;
+}
+
+a {
+  color: white;
+}
