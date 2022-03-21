@@ -4,21 +4,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
     <link rel="stylesheet" href="style.css">
-    <title>Phase III</title>
+    <title>Phase I</title>
 </head>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script type="text/javascript" src="script.js"></script>
 
+<script type="text/javascript" src="config.js"></script>
+<script type="text/javascript" src="script.js"></script>
 
 <body>
 
-    <script>pickPhaseLink("phase3")</script>
-
   <div width="100%">     
-    <h1 id="phaseHeader">Phase III</h1>
+    <h1 id="phaseHeader">Replace</h1>
 
     <p id="phaseInstructions">Click on Ratings for movies for detailed user reviews.</p>
 
@@ -57,6 +55,7 @@
    <a href="#" onclick="reviewTableSetup();"> <button id="returnButton" hidden="true"> Return to Phase </button> </a>
 </div>
 
+    <script>pickPhaseLink(sessionStorage.getItem('selectedPhase'))</script>
 </body>
 
 </html>

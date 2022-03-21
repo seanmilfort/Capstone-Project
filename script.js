@@ -1,147 +1,147 @@
+// Variables needed for Movie Timeline Table
+let movieInformation;
+let phaseInformation;
+let releaseInformation;
+let titleInfo;
+let reviewInformation;
+let phaseHeader = document.getElementById("phaseHeader");
 
-var movieInformation;
-var phaseInformation;
+// Variables needed for Review Table
+let mediaElement;
+let phaseButton;
+let reviewElement;
+let returnElement;
+let instructElement;
+let deleteTheadNumber;
+let oldHeader;
+let noReviewElement;
 
-var releaseInformation;
-var titleInfo;
-var reviewInformation;
-
-var mediaElement;
-var phaseButton;
-var reviewElement;
-var returnElement;
-var instructElement;
-var deleteTheadNumber;
-var oldHeader;
-
-var noReviewElement;
-
+// Variables needed for API call
 const posterPathURL = 'https://image.tmdb.org/t/p/original';
-const API_KEY = '?api_key=ce1dc6c891349801c4270eeaafa473bd';
 const WEBSITEURL = 'https://api.themoviedb.org/3/list/';
-
 const REVIEWURL = 'https://api.themoviedb.org/3/movie/';
 const REVIEWTVURL = 'https://api.themoviedb.org/3/tv/';
 const REVIEWPART = '/reviews';
 const REVIEWEND = '&language=en-US&page=1';
-var reviewInformationURL;
+let reviewInformationURL;
+
 
 function pickPhaseLink(phase) {
-    
+
+    let phaseHeader = document.getElementById("phaseHeader");
+
     switch (phase) {
 
         case 'phase1':
             phaseInformation = '8190650'
+            phaseHeader.innerHTML = "Phase 1";
             pullMovieInformation(phaseInformation);
             break;
         case 'phase2':
             phaseInformation = '8191873'
+            phaseHeader.innerHTML = "Phase 2";
             pullMovieInformation(phaseInformation);
             break;
         case 'phase3':
             phaseInformation = '8191877'
+            phaseHeader.innerHTML = "Phase 3";
             pullMovieInformation(phaseInformation);
             break;
         case 'phase4':
             phaseInformation = '8191878'
+            phaseHeader.innerHTML = "Phase 4";
             pullMovieInformation(phaseInformation);
-            break;    
-        }
+            break;
+    }
 }
 
 function pullMovieInformation(phaseInformation) {
 
-    fetch(WEBSITEURL + phaseInformation + API_KEY)
-    .then(result => result.json())
-    .then((output) => {
-        //console.log('Output: ', output.items);
-        movieInformation = output.items;
-        console.log(movieInformation);
+    fetch(WEBSITEURL + phaseInformation + config.apiKey)
+        .then(result => result.json())
+        .then((output) => {
 
-        placeMovieInformation(movieInformation);
-        
-     }).catch(err => console.error(err));
+            movieInformation = output.items;
+            console.log(movieInformation);
+            movieInformation.forEach(placeMovieInformation);
 
-    }
+        }).catch(err => console.error(err));
+
+}
 
 function placeMovieInformation(movieInformation) {
 
-    for (i = 0; i < movieInformation.length; i++) {
-        
-        switch(movieInformation[i].release_date) {
-            
-            case undefined:
+    switch (movieInformation.release_date) {
 
-                switch (movieInformation[i].first_air_date) {
                     case undefined:
-                        releaseInformation = "TBD";
-                        break;
-                    case '':
-                        releaseInformation = "TDB";
+        
+                        switch (movieInformation.first_air_date) {
+                            case undefined:
+                                releaseInformation = "TBD";
+                                break;
+                            case '':
+                                releaseInformation = "TDB";
+                                break;
+                            default:
+                                releaseInformation = movieInformation.first_air_date;
+                                break;
+                        }
+        
                         break;
                     default:
-                        releaseInformation = movieInformation[i].first_air_date;
+                        releaseInformation = movieInformation.release_date;
+                        break;
+        
+                }
+        
+                switch (movieInformation.title) {
+                    case undefined:
+                        titleInfo = movieInformation.name;
+                        break;
+                    default:
+                        titleInfo = movieInformation.title;
                         break;
                 }
+        
+                if (movieInformation.vote_count == '0') {
+                    reviewAverage = "There are no reviews available for this movie."
+                } else {
+                    reviewAverage = movieInformation.vote_average;
+                }
+        
+                let fullPosterPathURL = posterPathURL + movieInformation.poster_path;
+        
+                let table = document.getElementById('mediaTable');
+                let tr = document.createElement('tr');
+                tr.innerHTML += '<td>' + titleInfo + '</td>' + '<td> <img src="' + fullPosterPathURL + '" alt="' + titleInfo + '" /></td>' + '<td>' + movieInformation.overview + '</td>' + '<td>' + movieInformation.media_type + '</td>' + '<td>' + releaseInformation + '</td>' + '<td> <a href="#" onclick="reviewTableSetup(\'' + movieInformation.id + '\',\'' + movieInformation.media_type + '\')">' + reviewAverage + '</a></td>';
+                table.appendChild(tr);
 
-                break;
-            default:
-                releaseInformation = movieInformation[i].release_date;
-                break;
-
-        }
-
-        switch (movieInformation[i].title){
-            case undefined:
-                titleInfo = movieInformation[i].name;
-                break;
-            default:
-                titleInfo = movieInformation[i].title;
-                break;
-        }
-
-        if (movieInformation[i].vote_count =='0') {
-            reviewAverage = "There are no reviews available for this movie."
-        } else {
-            reviewAverage = movieInformation[i].vote_average;
-        }
-
-        var fullPosterPathURL = posterPathURL + movieInformation[i].poster_path;
-
-        var table = document.getElementById('mediaTable');
-        var tr = document.createElement('tr');
-        tr.innerHTML += '<td>' + titleInfo + '</td>' +  '<td> <img src="' + fullPosterPathURL + '"/></td>' +'<td>' + movieInformation[i].overview + '</td>' +  '<td>' + movieInformation[i].media_type + '</td>' +  '<td>' + releaseInformation + '</td>' + '<td> <a href="#" onclick="reviewTableSetup(\'' + movieInformation[i].id + '\',\'' + movieInformation[i].media_type + '\')">' + reviewAverage + '</a></td>';
-                    table.appendChild(tr);
-
-    }
 }
 
 function createReviewInformationURL(movieID, movieORTV) {
 
     if (movieORTV == "tv") {
-        reviewInformationURL = REVIEWTVURL + movieID + REVIEWPART + API_KEY + REVIEWEND;
+        reviewInformationURL = REVIEWTVURL + movieID + REVIEWPART + config.apiKey + REVIEWEND;
     }
     else {
-        reviewInformationURL = REVIEWURL + movieID + REVIEWPART + API_KEY + REVIEWEND;
+        reviewInformationURL = REVIEWURL + movieID + REVIEWPART + config.apiKey + REVIEWEND;
     }
-    
-    (async() => {
-    reviewInformationRAW = "";
-    reviewInformation = "";
-    reviewInformationRAW = await pullReviewInformation(reviewInformationURL);
-    reviewInformation = reviewInformationRAW.results;
-    console.log(reviewInformationRAW);
-    console.log(reviewInformation);
-    placeReviewInformation(reviewInformation);
+
+    (async () => {
+        reviewInformationRAW = "";
+        reviewInformation = "";
+        reviewInformationRAW = await pullReviewInformation(reviewInformationURL);
+        reviewInformation = reviewInformationRAW.results;
+        placeReviewInformation(reviewInformation);
     })();
 
 
 
-    }
+}
 
 function pullReviewInformation(reviewURL) {
     return fetch(reviewURL)
-    .then(response => response.json());
+        .then(response => response.json());
 }
 
 function placeReviewInformation(reviewInformation) {
@@ -152,45 +152,35 @@ function placeReviewInformation(reviewInformation) {
         noReviewElement.removeAttribute("hidden");
     } else {
 
-        var tableReview = document.getElementById('reviewTable');
-        var individualRating;
-        var individualRatingAssessment = reviewInformation[0].author_details.rating;
+        let tableReview = document.getElementById('reviewTable');
 
-        if (individualRatingAssessment = 'null') {
-            individualRating = "No Rating"
-        }
-        else {
-            individualRating = individualRatingAssessment;
-        }
-        var thead = document.createElement('thead');
+        let thead = document.createElement('thead');
         tableReview.appendChild(thead);
-        thead.innerHTML += ' <tr><td width="10%">' + reviewInformation[0].author_details.username + '</td><td width="10%" row >' + individualRating + '</td><td width="80%" rowspan="2">' + reviewInformation[0].content + '</td></tr><tr><td colspan="2">' + reviewInformation[0].created_at + '</td></tr><tr><td colspan="3"><a href="' + reviewInformation[0].url + '">' + reviewInformation[0].url + '</a></td></tr>';
         deleteTheadNumber = reviewInformation.length;
-    
-        for (i = 1; i < reviewInformation.length; i++) {
 
-            var individualRating;
-            var individualRatingAssessment = reviewInformation[i].author_details.rating;
+        reviewInformation.forEach(placeReviewInformation2);
 
-            if (individualRatingAssessment = 'null') {
+        function placeReviewInformation2(reviewInformation) {
+
+            let individualRating;
+            let individualRatingAssessment = reviewInformation.author_details.rating;
+
+            if (individualRatingAssessment == 'null') {
                 individualRating = "No Rating"
             }
             else {
                 individualRating = individualRatingAssessment;
             }
-    
-            var thead = document.createElement('thead');
+
+            let thead = document.createElement('thead');
             tableReview.appendChild(thead);
-            thead.innerHTML += ' <tr><td width="10%">' + reviewInformation[i].author_details.username + '</td><td width="10%" row >' + individualRating + '</td><td width="80%" rowspan="2">' + reviewInformation[i].content + '</td></tr><tr><td colspan="2">' + reviewInformation[i].created_at + '</td></tr><tr><td colspan="3"><a href="' + reviewInformation[i].url + '">' + reviewInformation[i].url + '</a></td></tr>';
-    
+            thead.innerHTML += ' <tr><td width="10%">' + reviewInformation.author_details.username + '</td><td width="10%" row >' + individualRating + '</td><td width="80%" rowspan="2">' + reviewInformation.content + '</td></tr><tr><td colspan="2">' + reviewInformation.created_at + '</td></tr><tr><td colspan="3"><a href="' + reviewInformation.url + '">' + reviewInformation.url + '</a></td></tr>';
+
         }
     }
-
-
-
 }
 
-function reviewTableSetup(movieID, movieORTV){
+function reviewTableSetup(movieID, movieORTV) {
 
     mediaElement = document.getElementById("mediaTable");
     phaseElement = document.getElementById("phaseButton");
@@ -230,12 +220,4 @@ function reviewTableSetup(movieID, movieORTV){
         phaseHeaderElement.innerHTML = "Reviews";
 
     }
-
-
-}
-
-function removeReviewTable() {
-
-
-
 }
