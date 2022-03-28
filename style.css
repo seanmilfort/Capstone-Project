@@ -41,6 +41,11 @@ td img {
 
 .mediaTable td, .mediaTable tr, .mediaTable th, .reviewTable td {
   border: 1px solid #5A5957;
+  text-align: justify;
+}
+
+.mediaTable thead {
+  display: table-header-group;
 }
 
 .reviewTable {

@@ -25,6 +25,9 @@ const REVIEWPART = '/reviews';
 const REVIEWEND = '&language=en-US&page=1';
 let reviewInformationURL;
 
+let dataTable;
+
+
 
 function pickPhaseLink(phase) {
 
@@ -63,13 +66,20 @@ function pullMovieInformation(phaseInformation) {
 
             movieInformation = output.items;
             console.log(movieInformation);
+
             movieInformation.forEach(placeMovieInformation);
 
-        }).catch(err => console.error(err));
+            
+            let dataTable = new simpleDatatables.DataTable("#mediaTable",{
+                searchable: false,
+                paging: false,
+                sortable: true
+            });
 
+        }).catch(err => console.error(err));
 }
 
-function placeMovieInformation(movieInformation) {
+function placeMovieInformation(movieInformation, dataTable) {
 
     switch (movieInformation.release_date) {
 
@@ -111,10 +121,10 @@ function placeMovieInformation(movieInformation) {
         
                 let fullPosterPathURL = posterPathURL + movieInformation.poster_path;
         
-                let table = document.getElementById('mediaTable');
+                let mediaTableInfo = document.getElementById('mediaTbody');
                 let tr = document.createElement('tr');
-                tr.innerHTML += '<td>' + titleInfo + '</td>' + '<td> <img src="' + fullPosterPathURL + '" alt="' + titleInfo + '" /></td>' + '<td>' + movieInformation.overview + '</td>' + '<td>' + movieInformation.media_type + '</td>' + '<td>' + releaseInformation + '</td>' + '<td> <a href="#" onclick="reviewTableSetup(\'' + movieInformation.id + '\',\'' + movieInformation.media_type + '\')">' + reviewAverage + '</a></td>';
-                table.appendChild(tr);
+                tr.innerHTML += '<td>' + titleInfo + '<br /> Movie Type: '  + movieInformation.media_type + '</td>' + '<td> <img src="' + fullPosterPathURL + '" alt="' + titleInfo + '" /></td>' + '<td>' + movieInformation.overview + '</td>' + '<td>' + releaseInformation + '</td>' + '<td> <a href="#" onclick="reviewTableSetup(\'' + movieInformation.id + '\',\'' + movieInformation.media_type + '\')">' + reviewAverage + '</a></td>';
+                mediaTableInfo.appendChild(tr);                
 
 }
 

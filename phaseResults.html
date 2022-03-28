@@ -5,43 +5,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+    <script type="text/javascript" src="config.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+
     <title>Phase I</title>
 </head>
-
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-
-<script type="text/javascript" src="config.js"></script>
-<script type="text/javascript" src="script.js"></script>
 
 <body>
 
   <div width="100%">     
     <h1 id="phaseHeader">Replace</h1>
 
-    <p id="phaseInstructions">Click on Ratings for movies for detailed user reviews.</p>
+    <p id="phaseInstructions">Click on Ratings for movies for detailed user reviews. <br /> You may click on a title heading to sort by that heading. <br /> Please note that once you sort by something other than release date, the movies will not be in chronological order.</p>
 
     <table id="mediaTable" class="mediaTable" width="100%">
-        <tr align-items="center">
-            <th width="15%">
-                <h3>Movie Title</h3> 
-            </th>
+        <thead>
+            <tr>
+                <th width="15%">
+                    <h3>Movie Title</h3> 
+                </th>
 
-            <th width="25%">
-                <h3>Poster</h3>
-            </th>
-            <th width="25%">
-                <h3>Description</h3>
-            </th>
-            <th width="5%">
-                <h3>Media Type</h3>
-            </th>
-            <th width="15%">
-                <h3>Release Date</h3> 
-            </th>
-            <th width="15%">
-                <h3>Rating</h3> 
-            </th>
-        </tr>
+                <th width="25%">
+                    <h3>Poster</h3>
+                </th>
+                <th width="40%">
+                    <h3>Description</h3>
+
+                </th>
+                <th width="10%">
+                    <h3>Release Date</h3> 
+                </th>
+                <th width="10%">
+                    <h3>Rating</h3> 
+                </th>
+            </tr>
+        </thead>
+        <tbody id="mediaTbody" class="mediaTbody">
+
+        </tbody>
     </table>
 
    <a href="phases.html"> <button id="phaseButton"> Select Another Phase </button> </a>
@@ -55,7 +62,7 @@
    <a href="#" onclick="reviewTableSetup();"> <button id="returnButton" hidden="true"> Return to Phase </button> </a>
 </div>
 
-    <script>pickPhaseLink(sessionStorage.getItem('selectedPhase'))</script>
+    <script defer>pickPhaseLink(sessionStorage.getItem('selectedPhase'))</script>
 </body>
 
 </html>
